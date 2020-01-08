@@ -7,14 +7,14 @@
     <!-- submit prevent prevents it from submitting to a file -->
     <form @submit.prevent="addOrUpdateArticle" class="mb-3">
       <div class="form-group">
-        <!-- v-model binds the input to the article title in this case -->  
+        <!-- v-model binds the input to the article title in this case -->
         <input type="text" class="form-control" placeholder="Title" v-model="article.title" />
       </div>
       <div class="form-group">
-        <!-- v-model binds the input to the article body in this case -->   
+        <!-- v-model binds the input to the article body in this case -->
         <textarea class="form-control" placeholder="Body" v-model="article.body"></textarea>
       </div>
-      <button type="submit" class="btn btn-light btn-block">Save</button>
+      <button type="submit" class="btn btn-success btn-block">Save</button>
     </form>
     <!-- Pagination -->
     <nav aria-label="Page navigation">
@@ -42,6 +42,7 @@
       <h3>{{ article.title }}</h3>
       <p>{{ article.body }}</p>
       <hr />
+      <button @click="editArticle(article)" class="btn btn-warning mb-1">Edit</button>
       <button @click="deleteArticle(article.id)" class="btn btn-danger">Delete</button>
     </div>
   </div>
@@ -109,25 +110,56 @@ export default {
     },
 
     addOrUpdateArticle() {
-        if(this.edit === false) {
-            // Add
-            fetch('api/article', {
-                method: 'post',
-                body: JSON.stringify(this.article),
-                headers: {
-                    'content-type': 'application/json'
-                }
-            })
-            .then(result => result.json()).then(data => {
-                this.article.title = '';
-                this.article.body = '';
-                alert('New article has been added');
-                this.fetchArticles();
-            })
-            .catch(err => console.log(err));
-        } else {
-            // Update
-        }
+      if (this.edit === false) {
+        // Add
+        fetch("api/article", {
+          method: "post",
+          body: JSON.stringify(this.article),
+          headers: {
+            "content-type": "application/json"
+          }
+        })
+          .then(result => result.json())
+          .then(data => {
+            this.article.title = "";
+            this.article.body = "";
+            alert("New article has been added");
+            this.fetchArticles();
+          })
+          .catch(err => console.log(err));
+      } else {
+        // Update
+        fetch("api/article", {
+          method: "put",
+          body: JSON.stringify(this.article),
+          headers: {
+            "content-type": "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            this.clearForm();
+            alert("Article Updated");
+            this.fetchArticles();
+          })
+          .catch(err => console.log(err));
+      }
+    },
+
+    editArticle(article) {
+      this.edit = true;
+      this.article.id = article.id;
+      this.article.article_id = article.id; // Needed for an update
+      this.article.title = article.title;
+      this.article.body = article.body;
+    },
+
+    clearForm() {
+      this.edit = false;
+      this.article.id = null;
+      this.article.article_id = null;
+      this.article.title = '';
+      this.article.body = '';
     }
   }
 };

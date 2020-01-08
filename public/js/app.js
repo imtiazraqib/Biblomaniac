@@ -1981,6 +1981,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     // Returning a state
@@ -2050,25 +2051,58 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.edit === false) {
         // Add
-        fetch('api/article', {
-          method: 'post',
+        fetch("api/article", {
+          method: "post",
           body: JSON.stringify(this.article),
           headers: {
-            'content-type': 'application/json'
+            "content-type": "application/json"
           }
         }).then(function (result) {
           return result.json();
         }).then(function (data) {
-          _this3.article.title = '';
-          _this3.article.body = '';
-          alert('New article has been added');
+          _this3.article.title = "";
+          _this3.article.body = "";
+          alert("New article has been added");
 
           _this3.fetchArticles();
         })["catch"](function (err) {
           return console.log(err);
         });
-      } else {// Update
+      } else {
+        // Update
+        fetch("api/article", {
+          method: "put",
+          body: JSON.stringify(this.article),
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.clearForm();
+
+          alert("Article Updated");
+
+          _this3.fetchArticles();
+        })["catch"](function (err) {
+          return console.log(err);
+        });
       }
+    },
+    editArticle: function editArticle(article) {
+      this.edit = true;
+      this.article.id = article.id;
+      this.article.article_id = article.id; // Needed for an update
+
+      this.article.title = article.title;
+      this.article.body = article.body;
+    },
+    clearForm: function clearForm() {
+      this.edit = false;
+      this.article.id = null;
+      this.article.article_id = null;
+      this.article.title = '';
+      this.article.body = '';
     }
   }
 });
@@ -19742,7 +19776,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-light btn-block",
+              staticClass: "btn btn-success btn-block",
               attrs: { type: "submit" }
             },
             [_vm._v("Save")]
@@ -19826,6 +19860,19 @@ var render = function() {
             _c("p", [_vm._v(_vm._s(article.body))]),
             _vm._v(" "),
             _c("hr"),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning mb-1",
+                on: {
+                  click: function($event) {
+                    return _vm.editArticle(article)
+                  }
+                }
+              },
+              [_vm._v("Edit")]
+            ),
             _vm._v(" "),
             _c(
               "button",
