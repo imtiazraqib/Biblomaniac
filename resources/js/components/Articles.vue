@@ -2,6 +2,20 @@
   <div>
     <h2>Articles</h2>
 
+    <!-- Add and Edit Form -->
+
+    <!-- submit prevent prevents it from submitting to a file -->
+    <form @submit.prevent="addOrUpdateArticle" class="mb-3">
+      <div class="form-group">
+        <!-- v-model binds the input to the article title in this case -->  
+        <input type="text" class="form-control" placeholder="Title" v-model="article.title" />
+      </div>
+      <div class="form-group">
+        <!-- v-model binds the input to the article body in this case -->   
+        <textarea class="form-control" placeholder="Body" v-model="article.body"></textarea>
+      </div>
+      <button type="submit" class="btn btn-light btn-block">Save</button>
+    </form>
     <!-- Pagination -->
     <nav aria-label="Page navigation">
       <ul class="pagination">
@@ -27,7 +41,7 @@
     <div class="card card-body mb-2" v-for="article in articles" v-bind:key="article.id">
       <h3>{{ article.title }}</h3>
       <p>{{ article.body }}</p>
-      <hr>
+      <hr />
       <button @click="deleteArticle(article.id)" class="btn btn-danger">Delete</button>
     </div>
   </div>
@@ -56,7 +70,6 @@ export default {
   },
 
   methods: {
-      
     fetchArticles(page_url) {
       let vm = this;
       page_url = page_url || "api/articles"; // Used for pagination
@@ -82,17 +95,40 @@ export default {
     },
 
     deleteArticle(id) {
-        if(confirm('Are you sure?')) {
-            fetch(`api/article/${id}`, {
-                method: 'delete'
-            }).then(result => result.json()).then(data => {
-                alert('Article Removed');
+      if (confirm("Are you sure?")) {
+        fetch(`api/article/${id}`, {
+          method: "delete"
+        })
+          .then(result => result.json())
+          .then(data => {
+            alert("Article Removed");
+            this.fetchArticles();
+          })
+          .catch(err => console.log(err));
+      }
+    },
+
+    addOrUpdateArticle() {
+        if(this.edit === false) {
+            // Add
+            fetch('api/article', {
+                method: 'post',
+                body: JSON.stringify(this.article),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            })
+            .then(result => result.json()).then(data => {
+                this.article.title = '';
+                this.article.body = '';
+                alert('New article has been added');
                 this.fetchArticles();
             })
             .catch(err => console.log(err));
+        } else {
+            // Update
         }
     }
-
   }
 };
 </script>
