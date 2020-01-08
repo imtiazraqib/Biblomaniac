@@ -33017,7 +33017,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { staticClass: "navbar navbar-expand-sm navbar-dark bg-dark mb-2" },
+    {
+      staticClass: "navbar navbar-expand-sm navbar-dark mb-2",
+      staticStyle: { "background-color": "#2980B9" }
+    },
     [
       _c("div", { staticClass: "container" }, [
         _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
