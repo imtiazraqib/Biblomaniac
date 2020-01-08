@@ -1,8 +1,8 @@
 ## What is Biblomaniac?
-Biblomaniac is a front end that showcases CRUD functionality of [Maqalat](https://github.com/imtiazraqib/Maqalat), a Laravel based API that contains books in JSON format, with keys as `article_id`, `title` and `body`.
+Biblomaniac is a Vue.js based front end that showcases CRUD functionality of [Maqalat](https://github.com/imtiazraqib/Maqalat), a Laravel based API that contains books in JSON format, with keys as `article_id`, `title` and `body`.
 
 ## What do you need to replicate this?
-You need a working version of [Maqalat](https://github.com/imtiazraqib/Maqalat) and the setup can be found **[here](https://github.com/imtiazraqib/Maqalat#setup-maqalat)**
+You need a working version of [Maqalat](https://github.com/imtiazraqib/Maqalat) and the setup can be found **[here](https://github.com/imtiazraqib/Maqalat#setup-maqalat)**.
 
 * Open `package.json` and scroll down to `devDependencies` and make sure the following are present:
  ``` json
