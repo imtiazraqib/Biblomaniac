@@ -1982,6 +1982,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     // Returning a state
@@ -1995,8 +2060,9 @@ __webpack_require__.r(__webpack_exports__);
       article_id: "",
       // Used for PUT request to the API
       pagination: {},
-      edit: false // Same form is going to be to used for add and edit
-
+      edit: false,
+      // Same form is going to be to used for add and edit
+      alertType: "none"
     };
   },
   // Runs when the window loads
@@ -2038,9 +2104,13 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (result) {
           return result.json();
         }).then(function (data) {
-          alert("Article Removed");
+          _this2.alertType = "delete";
 
           _this2.fetchArticles();
+
+          setTimeout(function () {
+            _this2.alertType = "none";
+          }, 2000);
         })["catch"](function (err) {
           return console.log(err);
         });
@@ -2062,14 +2132,19 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (data) {
           _this3.article.title = "";
           _this3.article.body = "";
-          alert("New article has been added");
+          _this3.alertType = "add";
 
           _this3.fetchArticles();
+
+          setTimeout(function () {
+            _this3.alertType = "none";
+          }, 2000);
         })["catch"](function (err) {
           return console.log(err);
         });
       } else {
         // Update
+        this.alertType = 'none';
         fetch("api/article", {
           method: "put",
           body: JSON.stringify(this.article),
@@ -2081,15 +2156,20 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (data) {
           _this3.clearForm();
 
-          alert("Article Updated");
+          _this3.alertType = 'edit';
 
           _this3.fetchArticles();
+
+          setTimeout(function () {
+            _this3.alertType = "none";
+          }, 2000);
         })["catch"](function (err) {
           return console.log(err);
         });
       }
     },
     editArticle: function editArticle(article) {
+      this.alertType = 'edit_process';
       this.edit = true;
       this.article.id = article.id;
       this.article.article_id = article.id; // Needed for an update
@@ -2101,8 +2181,8 @@ __webpack_require__.r(__webpack_exports__);
       this.edit = false;
       this.article.id = null;
       this.article.article_id = null;
-      this.article.title = '';
-      this.article.body = '';
+      this.article.title = "";
+      this.article.body = "";
     }
   }
 });
@@ -19713,6 +19793,120 @@ var render = function() {
     [
       _c("h2", [_vm._v("Articles")]),
       _vm._v(" "),
+      _vm.alertType === "add"
+        ? _c(
+            "div",
+            {
+              staticClass: "alert alert-success alert-dismissible fade show",
+              attrs: { role: "alert" }
+            },
+            [
+              _vm._t("default", [_vm._v("Article has been added")]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "alert",
+                    "aria-label": "Close"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.alertType = "none"
+                    }
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ],
+            2
+          )
+        : _vm.alertType === "delete"
+        ? _c(
+            "div",
+            {
+              staticClass: "alert alert-danger alert-dismissible fade show",
+              attrs: { role: "alert" }
+            },
+            [
+              _vm._t("default", [_vm._v("Article has been deleted")]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "alert",
+                    "aria-label": "Close"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.alertTpe = "none"
+                    }
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ],
+            2
+          )
+        : _vm.alertType === "edit_process"
+        ? _c(
+            "div",
+            {
+              staticClass: "alert alert-info fade show",
+              attrs: { role: "alert" }
+            },
+            [_vm._t("default", [_vm._v("Editing article")])],
+            2
+          )
+        : _vm.alertType === "edit"
+        ? _c(
+            "div",
+            {
+              staticClass: "alert alert-warning alert-dismissible fade show",
+              attrs: { role: "alert" }
+            },
+            [
+              _vm._t("default", [_vm._v("Article has been edited")]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "alert",
+                    "aria-label": "Close"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.alertTpe = "none"
+                    }
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "form",
         {
@@ -19924,7 +20118,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "nav",
-      { staticClass: "navbar navbar-expand-sm navbar-dark bg-info mb-2" },
+      { staticClass: "navbar navbar-expand-sm navbar-dark bg-dark mb-2" },
       [
         _c("div", { staticClass: "container" }, [
           _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [

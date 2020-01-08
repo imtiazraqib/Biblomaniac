@@ -2,6 +2,71 @@
   <div>
     <h2>Articles</h2>
 
+    <!-- Bootstrap Alerts -->
+
+    <!-- Article Added Alert -->
+    <div
+      v-if="alertType === 'add'"
+      class="alert alert-success alert-dismissible fade show"
+      role="alert"
+    >
+      <slot>Article has been added</slot>
+      <button
+        @click="alertType = 'none'"
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- Article Deleted Alert -->
+    <div
+      v-else-if="alertType === 'delete'"
+      class="alert alert-danger alert-dismissible fade show"
+      role="alert"
+    >
+      <slot>Article has been deleted</slot>
+      <button
+        @click="alertTpe = 'none'"
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- Article Editing Process Alert -->
+    <div
+      v-else-if="alertType === 'edit_process'"
+      class="alert alert-info fade show"
+      role="alert"
+    >
+      <slot>Editing article</slot>
+    </div>
+
+    <!-- Article Edited Alert -->
+    <div
+      v-else-if="alertType === 'edit'"
+      class="alert alert-warning alert-dismissible fade show"
+      role="alert"
+    >
+      <slot>Article has been edited</slot>
+      <button
+        @click="alertTpe = 'none'"
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
     <!-- Add and Edit Form -->
 
     <!-- submit prevent prevents it from submitting to a file -->
@@ -61,7 +126,8 @@ export default {
       },
       article_id: "", // Used for PUT request to the API
       pagination: {},
-      edit: false // Same form is going to be to used for add and edit
+      edit: false, // Same form is going to be to used for add and edit
+      alertType: "none"
     };
   },
 
@@ -102,8 +168,11 @@ export default {
         })
           .then(result => result.json())
           .then(data => {
-            alert("Article Removed");
+            this.alertType = "delete";
             this.fetchArticles();
+            setTimeout(() => {
+              this.alertType = "none";
+            }, 2000); 
           })
           .catch(err => console.log(err));
       }
@@ -123,12 +192,16 @@ export default {
           .then(data => {
             this.article.title = "";
             this.article.body = "";
-            alert("New article has been added");
+            this.alertType = "add"
             this.fetchArticles();
+            setTimeout(() => {
+              this.alertType = "none";
+            }, 2000);
           })
           .catch(err => console.log(err));
       } else {
         // Update
+        this.alertType = 'none'
         fetch("api/article", {
           method: "put",
           body: JSON.stringify(this.article),
@@ -139,14 +212,18 @@ export default {
           .then(res => res.json())
           .then(data => {
             this.clearForm();
-            alert("Article Updated");
+            this.alertType = 'edit'
             this.fetchArticles();
+            setTimeout(() => {
+              this.alertType = "none";
+            }, 2000);
           })
           .catch(err => console.log(err));
       }
     },
 
     editArticle(article) {
+      this.alertType = 'edit_process';
       this.edit = true;
       this.article.id = article.id;
       this.article.article_id = article.id; // Needed for an update
@@ -158,8 +235,8 @@ export default {
       this.edit = false;
       this.article.id = null;
       this.article.article_id = null;
-      this.article.title = '';
-      this.article.body = '';
+      this.article.title = "";
+      this.article.body = "";
     }
   }
 };
