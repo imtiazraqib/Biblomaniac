@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Articles</h2>
+    <h2 class="text-white">Articles</h2>
 
     <!-- Bootstrap Alerts -->
 
