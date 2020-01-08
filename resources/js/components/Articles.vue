@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h2 class="text-white">Articles</h2>
+    <h2 v-if="alertType === 'edit_process'" class="text-white">Edit the article</h2>
+    <h2 v-if="alertType === 'none'" class="text-white">Add an article</h2>
 
     <!-- Bootstrap Alerts -->
 
@@ -40,15 +41,6 @@
       </button>
     </div>
 
-    <!-- Article Editing Process Alert -->
-    <div
-      v-else-if="alertType === 'edit_process'"
-      class="alert alert-info fade show"
-      role="alert"
-    >
-      <slot>Editing article</slot>
-    </div>
-
     <!-- Article Edited Alert -->
     <div
       v-else-if="alertType === 'edit'"
@@ -81,6 +73,7 @@
       </div>
       <button type="submit" class="btn btn-success btn-block">Save</button>
     </form>
+
     <!-- Pagination -->
     <nav aria-label="Page navigation">
       <ul class="pagination">

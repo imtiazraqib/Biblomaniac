@@ -14890,13 +14890,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     // Returning a state
@@ -32641,7 +32634,13 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h2", { staticClass: "text-white" }, [_vm._v("Articles")]),
+      _vm.alertType === "edit_process"
+        ? _c("h2", { staticClass: "text-white" }, [_vm._v("Edit the article")])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.alertType === "none"
+        ? _c("h2", { staticClass: "text-white" }, [_vm._v("Add an article")])
+        : _vm._e(),
       _vm._v(" "),
       _vm.alertType === "add"
         ? _c(
@@ -32709,16 +32708,6 @@ var render = function() {
                 ]
               )
             ],
-            2
-          )
-        : _vm.alertType === "edit_process"
-        ? _c(
-            "div",
-            {
-              staticClass: "alert alert-info fade show",
-              attrs: { role: "alert" }
-            },
-            [_vm._t("default", [_vm._v("Editing article")])],
             2
           )
         : _vm.alertType === "edit"
